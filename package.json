@@ -4,7 +4,7 @@
   "description": "DOI handling for Roam Research",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "doi-regex": "^0.1.17",
-    "doi-utils": "^2.0.4"
+    "doi-utils": "^2.0.4",
+    "izitoast": "^1.4.0"
   }
 }
