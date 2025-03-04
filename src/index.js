@@ -4,7 +4,7 @@ import iziToast from "izitoast";
 export default {
     onload: ({ extensionAPI }) => {
         const config = {
-            tabTitle: "DOI Settings",
+            tabTitle: "DOI Handling",
             settings: [
                 {
                     id: "doi-format",
@@ -34,7 +34,8 @@ export default {
             var string;
 
             if (!startBlock) {
-                alert("Please place your cursor in a block to paste into your graph")
+                prompt("Please focus a block before pasting into your graph", 3000);
+                return;
             } else {
                 if (!doi.validate(clipText)) {
                     alert('Please make sure that the clipboard contains a DOI');
