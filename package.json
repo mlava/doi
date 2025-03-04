@@ -1,0 +1,27 @@
+{
+  "name": "doi",
+  "version": "1.0.0",
+  "description": "DOI handling for Roam Research",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mlava/doi.git"
+  },
+  "author": "Mark Lavercombe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mlava/doi/issues"
+  },
+  "homepage": "https://github.com/mlava/doi#readme",
+  "devDependencies": {
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "doi-regex": "^0.1.17",
+    "doi-utils": "^2.0.4"
+  }
+}
