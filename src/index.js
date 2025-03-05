@@ -52,7 +52,7 @@ export default {
                                 if (response.status === 404) {
                                     throw new Error("DOI not found (404)");
                                 }
-                                return response.json(); // Ensure the JSON response is returned
+                                return response.json();
                             })
                             .then(data => {
                                 if (data.status === "ok") {
@@ -97,24 +97,20 @@ export default {
             async function parseTree(blocks) {
                 if (blocks.hasOwnProperty([":block/children"])) {
                     for (var i = 0; i < blocks[":block/children"].length; i++) {
-                        //console.info(blocks[":block/children"][i][":block/string"]);
                         let text = blocks[":block/children"][i][":block/string"];
 
                         async function formatDOIs(text) {
-                            // Step 1: Identify DOIs and their possible prefixes
                             const doiRegex = /\b(https?:\/\/doi\.org\/|http:\/\/dx\.doi\.org\/|doi\.org\/)?(10\.[0-9]{4,9}\/[\-._;<>\/\w%]+(?:\([\w\s]+\))?)\b/g;
                             const markdownLinkRegex = /\[([^\]]+)\]\((https?:\/\/doi\.org\/(10\.[0-9]{4,9}\/[\-._;()<>\w]+(?:\/[\S]*)?))\)/g;
 
-                            // Step 2: Find and exclude markdown-formatted DOIs
                             let excludedDOIs = new Set();
                             text.replace(markdownLinkRegex, (match, alias, url, currentDoi) => {
-                                excludedDOIs.add(url); // Exclude the full DOI URL
+                                excludedDOIs.add(url);
                                 return match;
                             });
 
-                            // Function to format DOIs based on user settings
                             async function formatCurrentDoi(originalDoi) {
-                                let cleanDoi = originalDoi.replace(/^https?:\/\/doi\.org\//, '').replace(/^doi\.org\//, ''); // Remove prefixes
+                                let cleanDoi = originalDoi.replace(/^https?:\/\/doi\.org\//, '').replace(/^doi\.org\//, '');
 
                                 let formattedDoi;
                                 if (extensionAPI.settings.get("doi-format") === "Item Name") {
@@ -146,23 +142,20 @@ export default {
                                 return formattedDoi;
                             }
 
-                            // Step 3: Process text and format DOIs
                             async function processText(text) {
                                 let matches = [...text.matchAll(doiRegex)];
                                 let formattedDOIs = new Map();
 
                                 for (let match of matches) {
-                                    let fullDoi = match[0].trim(); // This includes prefix if present
-                                    let cleanDoi = match[2]; // This is just the DOI part
+                                    let fullDoi = match[0].trim();
+                                    let cleanDoi = match[2];
 
-                                    // Ensure the DOI isn't already in markdown format
                                     if (!excludedDOIs.has(fullDoi) && !formattedDOIs.has(fullDoi) && !text.includes(`[${fullDoi}](`)) {
                                         let formattedDoi = await formatCurrentDoi(fullDoi);
                                         formattedDOIs.set(fullDoi, formattedDoi);
                                     }
                                 }
 
-                                // Replace only unformatted DOIs
                                 formattedDOIs.forEach((formattedDoi, fullDoi) => {
                                     let safeRegex = new RegExp(`\\b${fullDoi.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, "g");
                                     text = text.replace(safeRegex, formattedDoi);
@@ -170,7 +163,6 @@ export default {
 
                                 return text;
                             }
-
                             return processText(text);
                         }
 
